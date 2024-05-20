@@ -101,10 +101,12 @@ namespace Legion {
             var owner = ctx.Role_GetOwner();
             if (status == GameStatus.Gaming || status == GameStatus.GameOver) {
 
-                // Camera
-                CameraApp.LateTick(ctx.cameraContext, dt);
-
                 // UI
+
+                // Camera
+                CameraApp.RecordDriverPos(ctx.cameraContext, owner.Pos);
+                var pos = CameraApp.LateTickPos(ctx.cameraContext, dt);
+                ctx.mainCamera.transform.position = pos;
 
             }
             // VFX

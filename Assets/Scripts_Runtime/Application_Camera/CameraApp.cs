@@ -9,19 +9,23 @@ namespace Legion {
 
     public static class CameraApp {
 
-        public static void Init(CameraAppContext ctx, Transform driver, Vector2 pos, Vector2 confinerWorldMax, Vector2 confinerWorldMin) {
-            var cameraID = CreateMainCamera(ctx, pos, confinerWorldMax, confinerWorldMin);
+        public static void Init(CameraAppContext ctx, Vector2 pos, float rot, float size, float aspect, Vector2 confinerWorldMax, Vector2 confinerWorldMin, Vector2 driverPos) {
+            var cameraID = CreateMainCamera(ctx, pos, rot, size, aspect, confinerWorldMax, confinerWorldMin, driverPos);
             SetCurrentCamera(ctx, cameraID);
             var config = ctx.templateInfraContext.Config_Get();
             var deadZoneNormalizedSize = config.cameraDeadZoneNormalizedSize;
 
             SetDeadZone(ctx, deadZoneNormalizedSize);
             EnableDeadZone(ctx, true);
-            SetMoveByDriver(ctx, driver);
+            SetMoveByDriver(ctx);
         }
 
-        public static void LateTick(CameraAppContext ctx, float dt) {
-            ctx.cameraCore.Tick(dt);
+        public static Vector2 LateTickPos(CameraAppContext ctx, float dt) {
+            return ctx.cameraCore.Tick(dt);
+        }
+
+        public static void RecordDriverPos(CameraAppContext ctx, Vector2 driverPos) {
+            ctx.cameraCore.RecordDriverPos(ctx.mainCameraID, driverPos);
         }
 
         public static void ShakeOnce(CameraAppContext ctx, int cameraID) {
@@ -35,8 +39,8 @@ namespace Legion {
         }
 
         // Camera
-        public static int CreateMainCamera(CameraAppContext ctx, Vector2 pos, Vector2 confinerWorldMax, Vector2 confinerWorldMin) {
-            ctx.mainCameraID = ctx.cameraCore.CreateCamera2D(pos, confinerWorldMax, confinerWorldMin);
+        public static int CreateMainCamera(CameraAppContext ctx, Vector2 pos, float rot, float size, float aspect, Vector2 confinerWorldMax, Vector2 confinerWorldMin, Vector2 driverPos) {
+            ctx.mainCameraID = ctx.cameraCore.CreateCamera2D(pos, rot, size, aspect, confinerWorldMax, confinerWorldMin, driverPos);
             return ctx.mainCameraID;
         }
 
@@ -50,9 +54,9 @@ namespace Legion {
             ctx.cameraCore.SetMoveToTarget(mainCameraID, target, duration, easingType, easingMode, onComplete);
         }
 
-        public static void SetMoveByDriver(CameraAppContext ctx, Transform driver) {
+        public static void SetMoveByDriver(CameraAppContext ctx) {
             var mainCameraID = ctx.mainCameraID;
-            ctx.cameraCore.SetMoveByDriver(mainCameraID, driver);
+            ctx.cameraCore.SetMoveByDriver(mainCameraID);
         }
 
         // DeadZone

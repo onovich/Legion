@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.U2D;
 
 namespace Legion {
@@ -22,6 +23,8 @@ namespace Legion {
         UIAppContext uiAppContext;
         VFXAppContext vfxAppContext;
         CameraAppContext cameraAppContext;
+        PPAppContext ppAppContext;
+        SoundAppContext soundAppContext;
 
         bool isLoadedAssets;
         bool isTearDown;
@@ -34,8 +37,9 @@ namespace Legion {
             Canvas mainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
             Transform hudFakeCanvas = GameObject.Find("HUDFakeCanvas").transform;
             Camera mainCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
+            Volume mainVolume = GameObject.Find("MainVolume").GetComponent<Volume>();
             Transform vfxRoot = GameObject.Find("VFXRoot").transform;
-
+            Transform soundRoot = GameObject.Find("SoundRoot").transform;
             inputEntity = new InputEntity();
 
             loginBusinessContext = new LoginBusinessContext();
@@ -43,7 +47,9 @@ namespace Legion {
 
             uiAppContext = new UIAppContext("UI", mainCanvas, hudFakeCanvas, mainCamera);
             vfxAppContext = new VFXAppContext("VFX", vfxRoot);
-            cameraAppContext = new CameraAppContext(mainCamera, new Vector2(Screen.width, Screen.height));
+            cameraAppContext = new CameraAppContext(new Vector2(Screen.width, Screen.height));
+            ppAppContext = new PPAppContext(mainVolume);
+            soundAppContext = new SoundAppContext(soundRoot);
 
             assetsInfraContext = new AssetsInfraContext();
             templateInfraContext = new TemplateInfraContext();
@@ -57,6 +63,8 @@ namespace Legion {
             gameBusinessContext.uiContext = uiAppContext;
             gameBusinessContext.vfxContext = vfxAppContext;
             gameBusinessContext.cameraContext = cameraAppContext;
+            gameBusinessContext.ppContext = ppAppContext;
+            gameBusinessContext.soundContext = soundAppContext;
             gameBusinessContext.mainCamera = mainCamera;
 
             cameraAppContext.templateInfraContext = templateInfraContext;

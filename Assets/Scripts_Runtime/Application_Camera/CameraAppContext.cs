@@ -14,8 +14,8 @@ namespace Legion {
         public Camera2DCore cameraCore;
         public int mainCameraID;
 
-        public CameraAppContext(Camera mainCamera, Vector2 screenSize) {
-            cameraCore = new Camera2DCore(mainCamera, screenSize);
+        public CameraAppContext(Vector2 screenSize) {
+            cameraCore = new Camera2DCore(screenSize);
         }
 
     }

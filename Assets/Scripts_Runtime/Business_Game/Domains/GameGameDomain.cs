@@ -34,7 +34,14 @@ namespace Legion {
             ctx.ownerSpawnPoint = spawnPoint;
 
             // Camera
-            CameraApp.Init(ctx.cameraContext, owner.transform, owner.Pos, mapTM.cameraConfinerWorldMax, mapTM.cameraConfinerWorldMin);
+            CameraApp.Init(ctx.cameraContext,
+                           owner.Pos,
+                           0,
+                           ctx.mainCamera.orthographicSize,
+                           ctx.mainCamera.aspect,
+                           mapTM.cameraConfinerWorldMax,
+                           mapTM.cameraConfinerWorldMin,
+                           owner.Pos);
 
             // UI
 

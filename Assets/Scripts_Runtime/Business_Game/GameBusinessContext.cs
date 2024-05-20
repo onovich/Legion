@@ -18,6 +18,8 @@ namespace Legion {
         public UIAppContext uiContext;
         public VFXAppContext vfxContext;
         public CameraAppContext cameraContext;
+        public PPAppContext ppContext;
+        public SoundAppContext soundContext;
 
         // Camera
         public Camera mainCamera;
